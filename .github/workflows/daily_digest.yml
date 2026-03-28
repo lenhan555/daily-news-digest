@@ -2,9 +2,7 @@ name: 📋 Daily News Digest
 
 on:
   schedule:
-    # 7:00 AM Vietnam time (ICT = UTC+7) every day
     - cron: '0 0 * * *'
-  # Allow manual trigger from GitHub Actions UI (for testing)
   workflow_dispatch:
 
 jobs:
@@ -32,9 +30,6 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
-          GMAIL_USER:         ${{ secrets.GMAIL_USER }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          RECIPIENT_EMAIL:    ${{ secrets.RECIPIENT_EMAIL }}
           ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
         run: python news_aggregator.py
 
@@ -43,5 +38,5 @@ jobs:
         run: |
           curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
             -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d text="⚠️ *Daily Digest FAILED* — Check GitHub Actions logs\nhttps://github.com/${{ github.repository }}/actions" \
+            -d text="⚠️ *Daily Digest FAILED* — Check GitHub Actions logs" \
             -d parse_mode="Markdown"
